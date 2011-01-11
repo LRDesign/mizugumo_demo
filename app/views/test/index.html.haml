@@ -3,15 +3,15 @@
 %p This tests the conversion of links into forms by NinjaHelper 
 
 .no_method
-  %h2 Basic link without method
+  %h3 Basic link without method
   = link_to "Show Product", @product
 
 .delete_method
-  %h2 Basic link with :delete method
+  %h3 Basic link with delete method
   = link_to "Delete Product", @product, :method => :delete
   
 .put_method
-  %h2 Basic link with :put method
+  %h3 Basic link with put method
   = link_to "Delete Product", @product, :method => :put  
   
   

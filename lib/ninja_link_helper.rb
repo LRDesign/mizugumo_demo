@@ -9,8 +9,6 @@ module NinjaLinkHelper
   # convert it to the expected link on Javascript-enabled
   # browsers.
   def link_to(*args, &block)
-    p "********** running replacement link_to "
-    # debugger
     if block_given?
       super(*args, &block)
     else
@@ -25,7 +23,6 @@ module NinjaLinkHelper
   end
   
   def degradable_form_for_link(*args, &block)
-    p "********** running degradable form_for"
     name          = args[0]
     options       = args[1] || {}
     html_options  = args[2]
