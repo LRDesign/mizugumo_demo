@@ -12,4 +12,9 @@ group :development, :test do
   gem "rspec", ">= 2.4.0"
   gem "rspec-rails", ">= 2.4.0"
   gem "factory_girl_rails"
+  gem 'ruby-debug'
+end
+
+group :test do
+  gem 'mongrel'
 end
