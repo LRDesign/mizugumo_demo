@@ -1,5 +1,6 @@
 NinjaHelperDemo::Application.routes.draw do
   resources :products
+  match 'test', :to => 'test#index'
   root :to => 'products#index'
 
   # The priority is based upon order of creation:
