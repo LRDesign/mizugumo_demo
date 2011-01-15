@@ -15,20 +15,35 @@ describe "test/index" do
   
   it "renders a delete form with method and authenticity token" do
     render
-    rendered.should have_selector(:form, :action => product_path(@product), :title => "Delete Product") do |scope|
-      scope.should have_selector(:input, :name => "commit", :value => "Delete Product")
-      scope.should have_selector(:input, :name => "_method", :value => "delete", :type => "hidden")
-      scope.should have_selector(:input, :name => "authenticity_token")
-    end    
+    rendered.should have_selector('.delete_method') do |outer_scope|    
+      outer_scope.should have_selector(:form, :action => product_path(@product), :title => "Delete Product") do |scope|
+        scope.should have_selector(:input, :name => "commit", :value => "Delete Product")
+        scope.should have_selector(:input, :name => "_method", :value => "delete", :type => "hidden")
+        scope.should have_selector(:input, :name => "authenticity_token")
+      end    
+    end
   end
   
   it "renders a put form with method and authenticity token" do
     render
-    rendered.should have_selector(:form, :action => product_path(@product), :title => "Put Product") do |scope|
-      scope.should have_selector(:input, :name => "commit", :value => "Put Product")
-      scope.should have_selector(:input, :name => "_method", :value => "put", :type => "hidden")
-      scope.should have_selector(:input, :name => "authenticity_token")
-    end    
+    rendered.should have_selector('.put_method') do |outer_scope|    
+      outer_scope.should have_selector(:form, :action => product_path(@product), :title => "Put Product") do |scope|
+        scope.should have_selector "input[name='commit'][value='Put Product'][type='submit']"
+        scope.should have_selector 'input[name="_method"][value="put"][type="hidden"]'
+        scope.should have_selector(:input, :name => "authenticity_token")
+      end    
+    end
+  end
+  
+  it "renders a delete form with an image submit button" do
+    # <input src="/images/press_it.png" type="image" />
+    rendered.should have_selector('.delete_with_image') do |outer_scope|    
+      outer_scope.should have_selector(:form, :action => product_path(@product), :title => "Delete Product") do |scope|
+        scope.should have_selector(:input, :src => "/images/press_it.png", :type => "image")
+        scope.should have_selector(:input, :name => "_method", :value => "delete", :type => "hidden")
+        scope.should have_selector(:input, :name => "authenticity_token")
+      end    
+    end
   end
   
 end

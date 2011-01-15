@@ -2,16 +2,20 @@
 
 %p This tests the conversion of links into forms by NinjaHelper 
 
-.no_method
-  %h3 Basic link without method
-  = link_to "Show Product", @product
-
-.delete_method
-  %h3 Basic link with delete method
-  = link_to "Delete Product", @product, :method => :delete
+/ .no_method
+/   %h3 Basic link without method
+/   = link_to "Show Product", @product
+/ 
+/ .delete_method
+/   %h3 Basic link with delete method
+/   = link_to "Delete Product", @product, :method => :delete
+/   
+/ .put_method
+/   %h3 Basic link with put method
+/   = link_to "Put Product", @product, :method => :put  
   
-.put_method
-  %h3 Basic link with put method
-  = link_to "Put Product", @product, :method => :put  
-  
+.delete_with_image
+  %h3 Image link with delete method
+  = link_to @product, :method => :delete do
+    = image_tag 'press_it.png'
   

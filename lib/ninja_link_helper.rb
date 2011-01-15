@@ -9,12 +9,16 @@ module NinjaLinkHelper
   # convert it to the expected link on Javascript-enabled
   # browsers.
   def link_to(*args, &block)
-    if block_given?
-      super(*args, &block)
-    else
-      html_options  = args[2]
-    end
+    p args
     
+    if block_given?
+      options       = args[0] || {}
+      html_options  = args[1]
+    else
+      options       = args[1] || {}
+      html_options  = args[2]      
+    end
+
     if html_options and html_options[:method]
       degradable_form_for_link(*args, &block)
     else
@@ -23,15 +27,39 @@ module NinjaLinkHelper
   end
   
   def degradable_form_for_link(*args, &block)
-    name          = args[0]
-    options       = args[1] || {}
-    html_options  = args[2]
+    if block_given?
+      degradable_form_for_link(capture(&block), *args)
+    else
+      contents = args.shift
+      # debugger
+      if contents =~ /<img.+src=['"](\S+?)['"]/
+        submit_element = image_submit_tag($1)        
+        # "<input type='image' src='#{$1}' />".html_safe
+        title = "block was passed"
+        debugger
+      else  
+        submit_element = submit_tag(title)
+        title = contents
+      end
+    end
+    options       = args[0] || {}
+    html_options  = args[1]
     action        = url_for(options)
     
-    content_tag(:form,  :action => action, :method => :post, :title => name, :class => "ninja degrade_form") do
+        
+    content_tag(:form,  :action => action, :method => :post, :title => title, :class => "ninja graceful_form") do
       hidden_field_tag("_method", html_options[:method]) +
       hidden_field_tag("authenticity_token", session[:_csrf_token]) +
-      submit_tag(name)
+      submit_element
     end    
   end  
 end
+
+#args for no block:
+# [ "Delete Product", 
+#   #<Product id: 27, name: "ProdName", description: "ProdDescription", price: #<BigDecimal:102de9178,'0.1E2',9(18)>, created_at: "2011-01-15 01:35:05", updated_at: "2011-01-15 01:35:05">, 
+#   {:method=>:delete} ]
+
+#args with block:
+# [ #<Product id: 27, name: "ProdName", description: "ProdDescription", price: #<BigDecimal:102ddc680,'0.1E2',9(18)>, created_at: "2011-01-15 01:35:05", updated_at: "2011-01-15 01:35:05">, 
+#   {:method=>:delete} ]
