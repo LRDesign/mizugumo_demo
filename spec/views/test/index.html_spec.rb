@@ -33,7 +33,7 @@ describe "test/index" do
           :class => "ninja graceful_form"
         ) do |scope|
         scope.should have_selector(:input, :name => "commit", :type => "submit", :value => "Put Product")
-        scope.should have_selector(:input, :name => "_method", :value => "delete", :type => "hidden")
+        scope.should have_selector(:input, :name => "_method", :value => "put", :type => "hidden")
         scope.should have_selector(:input, :name => "authenticity_token")
       end
     end

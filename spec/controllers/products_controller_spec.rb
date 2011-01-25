@@ -30,6 +30,16 @@ describe ProductsController do
       get :new
       assigns(:product).should be(mock_product)
     end
+
+    describe "with AJAX" do
+      it "should reply with javascript" do
+        Product.stub(:new) { mock_product }
+        xhr :get, :new
+        # debugger
+        p response.content_type
+        response.content_type.should == "text/javascript"
+      end
+    end
   end
 
   describe "GET edit" do
