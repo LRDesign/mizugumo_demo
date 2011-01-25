@@ -4,4 +4,4 @@
   %td= product.price
   %td= link_to 'Show', product
   %td= link_to 'Delete', product, :confirm => 'Are you sure?', :method => :delete
-  %td.with_ajax= link_to 'AJAX Delete', product, :confirm => 'Are you sure?', :method => :delete
+  %td= link_to 'AJAX Delete', product, :confirm => 'Are you sure?', :method => :delete, :class => "make_ajax"

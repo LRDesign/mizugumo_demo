@@ -18,6 +18,7 @@ module NinjaLinkHelper
     end
 
     if html_options and html_options[:method]
+      p "html options are #{html_options.inspect}"
       degradable_form_for_link(*args, &block)
     else
       super(*args, &block)
@@ -40,8 +41,11 @@ module NinjaLinkHelper
     options       = args[0] || {}
     html_options  = args[1]
     action        = url_for(options)
+    cssclass      = [ 'ninja graceful_form' ]
+    cssclass      << html_options[:class]
+    p "Output css classes are #{cssclass}"
 
-    content_tag(:form,  :action => action, :method => :post, :title => title, :class => "ninja graceful_form") do
+    content_tag(:form,  :action => action, :method => :post, :title => title, :class => cssclass) do
       hidden_field_tag("_method", html_options[:method]) +
       hidden_field_tag("authenticity_token", session[:_csrf_token]) +
       submit_element
