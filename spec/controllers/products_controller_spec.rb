@@ -46,6 +46,14 @@ describe ProductsController do
       get :edit, :id => "37"
       assigns(:product).should be(mock_product)
     end
+
+    describe "with AJAX" do
+      it "should reply with javascript" do
+        Product.stub(:find).with("37") { mock_product }
+        xhr :get, :edit, :id => "37"
+        response.content_type.should == "text/javascript"
+      end
+    end
   end
 
   describe "POST create" do
@@ -123,6 +131,13 @@ describe ProductsController do
       end
     end
 
+    describe "with AJAX" do
+      it "should respond with javascript" do
+        Product.should_receive(:find).with("37") { mock_product }
+        xhr :put, :update, :id => "37", :product => {'these' => 'params'}
+        response.content_type.should == "text/javascript"
+      end
+    end
   end
 
   describe "DELETE destroy" do
@@ -138,9 +153,11 @@ describe ProductsController do
       response.should redirect_to(products_url)
     end
 
-    describe "with " do
-      it "should description" do
-
+    describe "with AJAX" do
+      it "should reply with javascript" do
+        Product.stub(:find) { mock_product }
+        xhr :delete, :destroy, :id => "1"
+        response.content_type.should == "text/javascript"
       end
     end
   end

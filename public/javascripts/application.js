@@ -3,6 +3,7 @@
 Ninja.behavior({
   // ".contains_ajax ninja.graceful_form": Ninja.submits_as_ajax,
   ".make_ajax": Ninja.submits_as_ajax,
-  "#new_product": Ninja.submits_as_ajax,
+  ".new_product": Ninja.submits_as_ajax,
+  ".edit_product": Ninja.submits_as_ajax,
   ".ninja.graceful_form": Ninja.becomes_link
 })
