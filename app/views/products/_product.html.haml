@@ -1,6 +1,7 @@
 = content_tag_for :tr, product do
-  %td= product.name 
-  %td= product.description 
-  %td= product.price 
-  %td= link_to 'Show', product 
+  %td= product.name
+  %td= product.description
+  %td= product.price
+  %td= link_to 'Show', product
   %td= link_to 'Delete', product, :confirm => 'Are you sure?', :method => :delete
+  %td.with_ajax= link_to 'AJAX Delete', product, :confirm => 'Are you sure?', :method => :delete

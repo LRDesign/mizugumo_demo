@@ -2,21 +2,56 @@
 
 %p This tests the conversion of links into forms by NinjaHelper
 
-.no_method
-  %h3 Basic link without method
-  = link_to "Show Product", @product
+%table
+  %tr
+    %th Without AJAX
+    %th With AJAX
+  %tr
+    %td
+      .no_method
+        %h3 Basic link without method
+        = link_to "Show Product", @product
 
-.delete_method
-  %h3 Basic link with delete method
-  = link_to "Delete Product", @product, :method => :delete
+      .delete_method
+        %h3 Basic link with delete method
+        = link_to "Delete Product", @product, :method => :delete
 
-.put_method
-  %h3 Basic link with put method
-  = link_to "Put Product", @product, :method => :put
+      .put_method
+        %h3 Basic link with put method
+        = link_to "Put Product", @product, :method => :put
 
-.delete_with_image
-  %h3 Image link with delete method
-  = link_to @product, :method => :delete do
-    = image_tag 'press_it.png'
+      .image
+        %h3 Image link with delete method
+        = link_to @product, :method => :delete do
+          = image_tag 'press_it.png'
+
+      .image_and_text
+        %h3 Image link with delete method
+        = link_to @product, :method => :delete do
+          = image_tag 'press_it.png'
+          Some other text
+    %td#with_ajax
+      .no_method
+        %h3 Basic link without method
+        = link_to "Show Product", @product
+
+      .delete_method
+        %h3 Basic link with delete method
+        = link_to "Delete Product", @product, :method => :delete
+
+      .put_method
+        %h3 Basic link with put method
+        = link_to "Put Product", @product, :method => :put
+
+      .image
+        %h3 Image link with delete method
+        = link_to @product, :method => :delete do
+          = image_tag 'press_it.png'
+
+      .image_and_text
+        %h3 Image link with delete method
+        = link_to @product, :method => :delete do
+          = image_tag 'press_it.png'
+          Some other text
 
 

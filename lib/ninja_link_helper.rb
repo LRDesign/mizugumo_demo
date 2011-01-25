@@ -9,8 +9,6 @@ module NinjaLinkHelper
   # convert it to the expected link on Javascript-enabled
   # browsers.
   def link_to(*args, &block)
-    p args
-
     if block_given?
       options       = args[0] || {}
       html_options  = args[1]
@@ -35,8 +33,8 @@ module NinjaLinkHelper
         submit_element = image_submit_tag($1)
         title = "block was passed"
       else
-        submit_element = submit_tag(title)
         title = contents
+        submit_element = submit_tag(title)
       end
     end
     options       = args[0] || {}
