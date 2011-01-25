@@ -8,9 +8,9 @@ def copyfile(src, dest)
 end
 
 def install_file(file)
-  puts "installing #{file}.."
+  puts "installing #{file}"
   copyfile(
-    File.join(plugin_path, '..', file),
+    File.join(plugin_path, '../..', file),
     File.join(Rails.root, 'public', file)
   )
 end
