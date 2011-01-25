@@ -1,8 +1,8 @@
 module Logical
-  class NinjaHelperRailtie << Rails::Railtie
+  class NinjaHelperRailtie < Rails::Railtie
     railtie_name :ninja_helper
 
-    rake_task do
+    rake_tasks do
       load 'tasks/ninja_helper.rake'
     end
   end
