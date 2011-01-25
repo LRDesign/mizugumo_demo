@@ -18,7 +18,6 @@ module NinjaLinkHelper
     end
 
     if html_options and html_options[:method]
-      p "html options are #{html_options.inspect}"
       degradable_form_for_link(*args, &block)
     else
       super(*args, &block)
@@ -42,8 +41,7 @@ module NinjaLinkHelper
     html_options  = args[1]
     action        = url_for(options)
     cssclass      = [ 'ninja graceful_form' ]
-    cssclass      << html_options[:class]
-    p "Output css classes are #{cssclass}"
+    cssclass      << html_options[:class] unless html_options[:class].blank?
 
     content_tag(:form,  :action => action, :method => :post, :title => title, :class => cssclass) do
       hidden_field_tag("_method", html_options[:method]) +
@@ -53,11 +51,3 @@ module NinjaLinkHelper
   end
 end
 
-#args for no block:
-# [ "Delete Product",
-#   #<Product id: 27, name: "ProdName", description: "ProdDescription", price: #<BigDecimal:102de9178,'0.1E2',9(18)>, created_at: "2011-01-15 01:35:05", updated_at: "2011-01-15 01:35:05">,
-#   {:method=>:delete} ]
-
-#args with block:
-# [ #<Product id: 27, name: "ProdName", description: "ProdDescription", price: #<BigDecimal:102ddc680,'0.1E2',9(18)>, created_at: "2011-01-15 01:35:05", updated_at: "2011-01-15 01:35:05">,
-#   {:method=>:delete} ]
