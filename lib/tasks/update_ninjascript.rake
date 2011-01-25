@@ -9,6 +9,7 @@ namespace :dev do
     system "cd #{ninjapath}"
     system "git pull"
     system "cp #{ninjapath}/javascript/jquery.ninja_script.js #{destpath}/javascripts/"
+    system "cp #{ninjapath}/javascript/jquery.ninja_script.js #{Rails.root}/vendor/plugins/ninja_helper/javascripts/"
     system "mkdir -p #{destpath}/images/ui"
     system "cp #{ninjapath}/images/ui/spinner.gif #{destpath}/images/ui/"
   end
