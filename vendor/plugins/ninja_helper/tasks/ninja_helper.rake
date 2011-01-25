@@ -3,11 +3,12 @@ def plugin_path
 end
 
 def copyfile(src, dest)
-  mkdir_p File.dirname(dest), QUIET
-  cp src, dest, QUIET
+  mkdir_p File.dirname(dest), :verbose => false
+  cp src, dest, :verbose => false
 end
 
 def install_file(file)
+  puts "installing #{file}.."
   copyfile(
     File.join(plugin_path, '..', file),
     File.join(Rails.root, 'public', file)
@@ -23,6 +24,7 @@ namespace :ninja_helper do
     install_file 'stylesheets/sass/ninjascript.sass'
     install_file 'images/ui/spinner.gif'
     # append default behavior to application.js
+    puts "done.\n"
   end
 end
 
