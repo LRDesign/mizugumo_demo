@@ -1,1 +1,1 @@
-require 'ninja_helper'
+require 'logical/ninja_helper'

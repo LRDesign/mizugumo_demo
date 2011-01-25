@@ -1,7 +1,7 @@
 # This is a development-only rake task to update the version of NinjaScript
 # when Judson makes changes
 
-namespace :ninja do
+namespace :dev do
   desc "DEV ONLY: pull and copy in the latest ninjascript"
   task :update do
     ninjapath = Rails.root + '../NinjaScript'
