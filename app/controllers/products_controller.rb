@@ -47,8 +47,10 @@ class ProductsController < ApplicationController
       if @product.save
         format.html { redirect_to(@product, :notice => 'Product was successfully created.') }
         format.xml  { render :xml => @product, :status => :created, :location => @product }
+        format.js
       else
         format.html { render :action => "new" }
+        format.js { render :action => "new" }
         format.xml  { render :xml => @product.errors, :status => :unprocessable_entity }
       end
     end
