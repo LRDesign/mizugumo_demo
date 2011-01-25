@@ -207,15 +207,12 @@ function buildNinja() {
               }, {})
             link.attr(attrs)
 
-            this.baseForm = jq_form.replaceWith(link) // I think this'll nix baseForm
+            this.stash(jq_form.replaceWith(link)) // I think this'll nix baseForm
             return link
           },
           events: {
             click: function(evnt, elem){
-              var formDiv = Ninja.tools.hiddenDiv()
-              $(this.baseForm).data("ninja-visited", true)
-              $(formDiv).append(this.baseForm)
-              this.baseForm.trigger("submit")
+              this.cascadeEvent("submit")
             }
           }
         })
@@ -267,7 +264,7 @@ function buildNinja() {
     //  autocomplete    
     //  observe_form / observe_field
 
-    behavior: function(dispatching) {
+    goodBehavior: function(dispatching) {
       var collection = this.tools.get_root_collection()
       for(var selector in dispatching) 
       {
@@ -278,7 +275,25 @@ function buildNinja() {
           collection.addBehavior(selector, dispatching[selector])
         }
       }
-      $(function(){ Ninja.tools.fire_mutation_event(); });
+      $(window).load( function(){ Ninja.go() } )
+    },
+    misbehavior: function(nonsense) {
+      throw new Error("Called Ninja.behavior() after Ninja.go() - don't do that.  'Go' means 'I'm done, please proceed'")
+    },
+    behavior: this.goodBehavior,
+    go: function() {
+      if(this.behavior != this.misbehavior) {
+        var rootOfDocument = this.tools.get_root_of_document()
+        rootOfDocument.bind("DOMSubtreeModified DOMNodeInserted thisChangedDOM", handleMutation);
+        //If we ever receive either of the W3C DOMMutation events, we don't need our IE based
+        //hack, so nerf it
+        rootOfDocument.one("DOMSubtreeModified DOMNodeInserted", function(){
+            this.fire_mutation_event = function(){}
+            this.add_mutation_targets = function(t){}
+          })
+        this.behavior = this.misbehavior
+        this.tools.fire_mutation_event()
+      }
     }
   }
 
@@ -310,6 +325,7 @@ function buildNinja() {
       }
     },
     clear_root_collection: function() {
+      Ninja.behavior = Ninja.goodBehavior
       this.get_root_of_document().data("ninja-behavior", null)
     },
     get_root_collection: function() {
@@ -320,13 +336,6 @@ function buildNinja() {
 
       var collection = new BehaviorCollection()
       rootOfDocument.data("ninja-behavior", collection);
-      rootOfDocument.bind("DOMSubtreeModified DOMNodeInserted thisChangedDOM", handleMutation);
-      //If we ever receive either of the W3C DOMMutation events, we don't need our IE based
-      //hack, so nerf it
-      rootOfDocument.one("DOMSubtreeModified DOMNodeInserted", function(){
-          this.fire_mutation_event = function(){}
-          this.add_mutation_targets = function(t){}
-        })
       return collection
     },
     derive_elements_from: function(element, means){
@@ -584,7 +593,32 @@ function buildNinja() {
     }
   }
 
-  TRANSFORM_FAILED = {}
+  function TransformFailedException(){}
+  function CouldntChooseException() { }
+
+  function RootContext() {
+    this.stashedElements = []
+  }
+
+  RootContext.prototype = {
+    stash: function(element) {
+      this.stashedElements.unshift(element)
+    },
+    clearStash: function() {
+      this.stashedElements = []
+    },
+    //XXX Of concern: how do cascading events work out?
+    //Should there be a first catch?  Or a "doesn't cascade" or something?
+    cascadeEvent: function(event) {
+      var formDiv = Ninja.tools.hiddenDiv()
+      forEach(this.stashedElements, function(element) {
+          var elem = $(element)
+          elem.data("ninja-visited", true)
+          $(formDiv).append(elem)
+          elem.trigger(event)
+        })
+    }
+  }
 
   BehaviorCollection.prototype = {
     //XXX: check if this is source of new slowdown
@@ -594,6 +628,7 @@ function buildNinja() {
             this.addBehavior(selector, behaves)
           }, this)
       }
+      //TODO IE: instanceof is suspect
       else if(behavior instanceof Behavior) {
         this.insertBehavior(selector, behavior)
       } 
@@ -655,7 +690,10 @@ function buildNinja() {
       }
     },
     applyBehaviorsTo: function(element, behaviors) {
-      var curContext, context = {}, applyList = [], scribe = new EventScribe
+      var curContext, 
+      context = new RootContext, 
+      applyList = [], 
+      scribe = new EventScribe
 
       behaviors = behaviors.sort(function(left, right) {
           if(left.priority != right.priority) {
@@ -678,7 +716,7 @@ function buildNinja() {
       forEach(behaviors,
         function(behavior){
           //XXX This needs to have exception handling back
-          //try {
+          try {
             curContext = behavior.inContext(context)
             element = behavior.applyTransform(curContext, element)
 
@@ -686,16 +724,16 @@ function buildNinja() {
             context.element = element
 
             scribe.recordEventHandlers(context, behavior)
-//          }
-//          catch(ex) {
-//            if(ex === TRANSFORM_FAILED) {
-//              log("!!! Transform failed")
-//            }
-//            else {
-//              log(ex)
-//              throw ex
-//            }
-//          }
+          }
+          catch(ex) {
+            if(ex instanceof TransformationFailedException) {
+              log("!!! Transform failed")
+            }
+            else {
+              log(ex)
+              throw ex
+            }
+          }
         }
       )
       $(element).data("ninja-visited", true)
@@ -705,8 +743,19 @@ function buildNinja() {
       return element
     },
     collectBehaviors: function(element, collection, behaviors) {
-      forEach(behaviors, function(val, idx, l) {
-          collection.push(val.choose(element))
+      forEach(behaviors, function(val) {
+          try {
+            collection.push(val.choose(element))
+          }
+          catch(ex) {
+            if(ex instanceof CouldntChooseException) {
+              log("!!! couldn't choose")
+            }
+            else {
+              log(ex)
+              throw(ex)
+            }
+          }
         })
     },
     //XXX Still doesn't quite handle the sub-behavior case - order of application
@@ -750,7 +799,13 @@ function buildNinja() {
 
   Metabehavior.prototype = {
     choose: function(element) {
-      return this.chooser(element).choose(element)
+      var chosen = this.chooser(element)
+      if(chosen !== undefined) {
+        return chosen.choose(element)
+      }
+      else {
+        throw new CouldntChooseException
+      }
     }
   }
 
@@ -787,8 +842,8 @@ function buildNinja() {
     }
     if (typeof handlers.priority != "undefined"){
       this.priority = handlers.priority
-      delete handlers.priority
     }
+    delete handlers.priority
     if (typeof handlers.events != "undefined") {
       this.event_handlers = handlers.events
     } 
@@ -826,7 +881,14 @@ function buildNinja() {
       return $.extend(left, right)
     },
     applyTransform: function(context, elem) {
-      return this.transform.call(context, elem)
+      var previousElem = elem
+      var newElem = this.transform.call(context, elem)
+      if(newElem === undefined) {
+        return previousElem
+      }
+      else {
+        return newElem
+      }
     },
     applyEventHandlers: function(context, elem) {
       for(var event_name in this.event_handlers) {
