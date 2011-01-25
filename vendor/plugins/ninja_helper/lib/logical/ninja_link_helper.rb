@@ -1,5 +1,4 @@
-
-module NinjaLinkHelper
+module Logical::NinjaLinkHelper
   include ActionView::Helpers::UrlHelper
 
   # Redefined link_to to provide Ninja-style
