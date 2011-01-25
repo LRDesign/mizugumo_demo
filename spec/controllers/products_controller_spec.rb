@@ -35,8 +35,6 @@ describe ProductsController do
       it "should reply with javascript" do
         Product.stub(:new) { mock_product }
         xhr :get, :new
-        # debugger
-        p response.content_type
         response.content_type.should == "text/javascript"
       end
     end
@@ -80,6 +78,13 @@ describe ProductsController do
       end
     end
 
+    describe "with AJAX" do
+      it "should respond with javascript" do
+        Product.stub(:new).with({'these' => 'params'}) { mock_product(:save => true) }
+        xhr :post, :create, :product => {'these' => 'params'}
+        response.content_type.should == "text/javascript"
+      end
+    end
   end
 
   describe "PUT update" do
