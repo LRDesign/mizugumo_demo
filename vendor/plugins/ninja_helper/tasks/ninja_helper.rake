@@ -3,8 +3,8 @@ def plugin_path
 end
 
 def copyfile(src, dest)
-  mkdir_p File.dirname(dest)
-  cp src, dest
+  mkdir_p File.dirname(dest), QUIET
+  cp src, dest, QUIET
 end
 
 def install_file(file)
@@ -13,7 +13,6 @@ def install_file(file)
     File.join(Rails.root, 'public', file)
   )
 end
-
 
 namespace :ninja_helper do
   desc "Install NinjaHelper Files"
