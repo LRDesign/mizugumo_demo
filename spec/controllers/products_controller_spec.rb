@@ -137,6 +137,12 @@ describe ProductsController do
       delete :destroy, :id => "1"
       response.should redirect_to(products_url)
     end
+
+    describe "with " do
+      it "should description" do
+
+      end
+    end
   end
 
 end
