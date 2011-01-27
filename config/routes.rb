@@ -1,4 +1,4 @@
-NinjaHelperDemo::Application.routes.draw do
+MizugumoDemo::Application.routes.draw do
   resources :products
   match 'test', :to => 'test#index'
   root :to => 'products#index'

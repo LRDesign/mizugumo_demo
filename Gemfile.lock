@@ -1,3 +1,8 @@
+PATH
+  remote: ../mizugumo
+  specs:
+    mizugumo (0.1.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -111,6 +116,7 @@ PLATFORMS
 DEPENDENCIES
   factory_girl_rails
   haml
+  mizugumo!
   mongrel
   rails (= 3.0.3)
   rspec (>= 2.4.0)

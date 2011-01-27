@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
-module NinjaHelperDemo
+module MizugumoDemo
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -39,8 +39,9 @@ module NinjaHelperDemo
     config.generators do |g|
       g.test_framework :rspec, :fixture => true
       g.fixture_replacement 'factory_girl'
+      g.scaffold_controller 'mizugumo:scaffold_controller'
+      g.template_engine 'mizugumo:haml'
     end
-
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
