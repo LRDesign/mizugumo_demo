@@ -29,12 +29,17 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @product }
+      format.js
     end
   end
 
   # GET /products/1/edit
   def edit
     @product = Product.find(params[:id])
+    respond_to do |format|
+      format.html # new.html.erb
+      format.js
+    end
   end
 
   # POST /products
@@ -46,8 +51,10 @@ class ProductsController < ApplicationController
       if @product.save
         format.html { redirect_to(@product, :notice => 'Product was successfully created.') }
         format.xml  { render :xml => @product, :status => :created, :location => @product }
+        format.js
       else
         format.html { render :action => "new" }
+        format.js { render :action => "new" }
         format.xml  { render :xml => @product.errors, :status => :unprocessable_entity }
       end
     end
@@ -62,9 +69,11 @@ class ProductsController < ApplicationController
       if @product.update_attributes(params[:product])
         format.html { redirect_to(@product, :notice => 'Product was successfully updated.') }
         format.xml  { head :ok }
+        format.js
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @product.errors, :status => :unprocessable_entity }
+        format.js   { render :action => "edit" }
       end
     end
   end
@@ -78,6 +87,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(products_url) }
       format.xml  { head :ok }
+      format.js
     end
   end
 end

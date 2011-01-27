@@ -13,10 +13,9 @@ doc/plugins
 doc/api
 doc/app
 doc/*.doc
-doc/*.zip     
+doc/*.zip
 config/initializers/session_secret.rb
 db/*.sqlite3*
-database.yml
 public/stylesheets/*.css
 !public/stylesheets/reset.css
 public/javascripts/all.js
@@ -41,7 +40,7 @@ rsa_key*
 public/stylesheets/screen.css
 system/datas/*
 sqldumps/*
-config/environments/test_*.rb 
+config/environments/test_*.rb
 capybara*.html
 .bundle
 .bundle/*

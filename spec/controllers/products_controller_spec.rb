@@ -30,6 +30,14 @@ describe ProductsController do
       get :new
       assigns(:product).should be(mock_product)
     end
+
+    describe "with AJAX" do
+      it "should reply with javascript" do
+        Product.stub(:new) { mock_product }
+        xhr :get, :new
+        response.content_type.should == "text/javascript"
+      end
+    end
   end
 
   describe "GET edit" do
@@ -37,6 +45,14 @@ describe ProductsController do
       Product.stub(:find).with("37") { mock_product }
       get :edit, :id => "37"
       assigns(:product).should be(mock_product)
+    end
+
+    describe "with AJAX" do
+      it "should reply with javascript" do
+        Product.stub(:find).with("37") { mock_product }
+        xhr :get, :edit, :id => "37"
+        response.content_type.should == "text/javascript"
+      end
     end
   end
 
@@ -70,6 +86,13 @@ describe ProductsController do
       end
     end
 
+    describe "with AJAX" do
+      it "should respond with javascript" do
+        Product.stub(:new).with({'these' => 'params'}) { mock_product(:save => true) }
+        xhr :post, :create, :product => {'these' => 'params'}
+        response.content_type.should == "text/javascript"
+      end
+    end
   end
 
   describe "PUT update" do
@@ -108,6 +131,13 @@ describe ProductsController do
       end
     end
 
+    describe "with AJAX" do
+      it "should respond with javascript" do
+        Product.should_receive(:find).with("37") { mock_product }
+        xhr :put, :update, :id => "37", :product => {'these' => 'params'}
+        response.content_type.should == "text/javascript"
+      end
+    end
   end
 
   describe "DELETE destroy" do
@@ -121,6 +151,14 @@ describe ProductsController do
       Product.stub(:find) { mock_product }
       delete :destroy, :id => "1"
       response.should redirect_to(products_url)
+    end
+
+    describe "with AJAX" do
+      it "should reply with javascript" do
+        Product.stub(:find) { mock_product }
+        xhr :delete, :destroy, :id => "1"
+        response.content_type.should == "text/javascript"
+      end
     end
   end
 
