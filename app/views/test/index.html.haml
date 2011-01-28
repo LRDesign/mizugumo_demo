@@ -11,7 +11,7 @@
     %th Without AJAX
     %th With AJAX
   %tr
-    %td
+    %td#without_ajax
       .no_method
         %h3 Basic link without method
         = link_to "Show Product", @product
@@ -19,6 +19,10 @@
       .delete_method
         %h3 Basic link with delete method
         = link_to "Delete Product", @product, :method => :delete
+
+      .delete_with_confirm
+        %h3 Basic link with delete method and confirm
+        = link_to "Delete Product", @product, :method => :delete, :confirm => 'Are you sure?'
 
       .put_method
         %h3 Basic link with put method
@@ -42,6 +46,10 @@
       .delete_method
         %h3 Basic link with delete method
         = link_to "Delete Product", @product, :method => :delete
+
+      .delete_with_confirm
+        %h3 Basic link with delete method and confirm
+        = link_to "Delete Product", @product, :method => :delete, :confirm => 'Are you sure?'
 
       .put_method
         %h3 Basic link with put method

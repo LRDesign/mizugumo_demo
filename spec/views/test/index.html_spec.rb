@@ -15,7 +15,7 @@ describe "test/index" do
 
   it "renders a delete form with method and authenticity token" do
     render
-    rendered.should have_selector('.delete_method') do |outer_scope|
+    rendered.should have_selector('#without_ajax .delete_method') do |outer_scope|
       outer_scope.should have_selector(:form, :action => product_path(@product), :title => "Delete Product",
           :class => "mizugumo_graceful_form"
         ) do |scope|
@@ -26,9 +26,17 @@ describe "test/index" do
     end
   end
 
+  it "renders a delete form with data-confirm" do
+    render
+    rendered.should have_selector('#without_ajax .delete_with_confirm') do |outer_scope|
+      outer_scope.should have_xpath('form[@data-confirm="Are you sure?"]')
+    end
+  end
+
+
   it "renders a put form with method and authenticity token" do
     render
-    rendered.should have_selector('.put_method') do |outer_scope|
+    rendered.should have_selector('#without_ajax .put_method') do |outer_scope|
       outer_scope.should have_selector(:form, :action => product_path(@product), :title => "Put Product",
           :class => "mizugumo_graceful_form"
         ) do |scope|
@@ -42,7 +50,7 @@ describe "test/index" do
   it "renders a delete form with an image submit button" do
     # <input src="/images/press_it.png" type="image" />
     render
-    rendered.should have_selector('.image') do |outer_scope|
+    rendered.should have_selector('#without_ajax .image') do |outer_scope|
       outer_scope.should have_selector(:form, :action => product_path(@product),
           :class => "mizugumo_graceful_form"
         ) do |scope|
@@ -56,7 +64,7 @@ describe "test/index" do
   it "renders a delete form with an image submit button" do
     # <input src="/images/press_it.png" type="image" />
     render
-    rendered.should have_selector('.image_and_text') do |outer_scope|
+    rendered.should have_selector('#without_ajax .image_and_text') do |outer_scope|
       outer_scope.should have_selector(:form, :action => product_path(@product),
           :class => "mizugumo_graceful_form"
         ) do |scope|
