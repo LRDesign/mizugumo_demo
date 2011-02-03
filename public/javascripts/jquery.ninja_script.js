@@ -1,5 +1,8 @@
-// vim: sw=2 ft=javascript
-
+/*
+ * NinjaScript - 0.8.0
+ * written and copyright 2010-2011 Judson Lester and Logical Reality Design
+ * Licensed under the MIT license
+ */
 Ninja = (function() {
   function log(message) {
     try {
@@ -60,11 +63,11 @@ Ninja = (function() {
 
     goodBehavior: function(dispatching) {
       var collection = this.tools.getRootCollection()
-      for(var selector in dispatching) 
+      for(var selector in dispatching)
       {
         if(typeof dispatching[selector] == "undefined") {
           log("Selector " + selector + " not properly defined - ignoring")
-        } 
+        }
         else {
           collection.addBehavior(selector, dispatching[selector])
         }
@@ -126,8 +129,8 @@ Ninja = (function() {
     fireMutationEvent: function() {
       var targets = this.mutationTargets
       if (targets.length > 0 ) {
-        for(var target = targets.shift(); 
-          targets.length > 0; 
+        for(var target = targets.shift();
+          targets.length > 0;
           target = targets.shift()) {
           $(target).trigger("thisChangedDOM")
         }
@@ -181,7 +184,7 @@ Ninja = (function() {
       return new AjaxSubmitter(form)
     },
     overlay: function() {
-      // I really liked using 
+      // I really liked using
       //return new Overlay([].map.apply(arguments,[function(i) {return i}]))
       //but IE8 doesn't implement ECMA 2.6.2 5th ed.
 
@@ -194,13 +197,13 @@ Ninja = (function() {
       return overlay
     },
     extractMethod: function(element, formData) {
-      if(element.dataset !== undefined && 
-        element.dataset["method"] !== undefined && 
+      if(element.dataset !== undefined &&
+        element.dataset["method"] !== undefined &&
         element.dataset["method"].length > 0) {
         log("Override via dataset: " + element.dataset["method"])
         return element.dataset["method"]
       }
-      if(element.dataset === undefined && 
+      if(element.dataset === undefined &&
         $(element).attr("data-method") !== undefined) {
         log("Override via data-method: " + $(element).attr("data-method"))
         return $(element).attr("data-method")
@@ -215,7 +218,7 @@ Ninja = (function() {
       }
       if(typeof element.method !== "undefined") {
         return element.method
-      } 
+      }
       return "GET"
     },
     //Currently, this doesn't respect changes to the original block...
@@ -443,7 +446,7 @@ Ninja = (function() {
       }
       else if(behavior instanceof Behavior) {
         this.insertBehavior(selector, behavior)
-      } 
+      }
       else if(behavior instanceof Selectabehavior) {
         this.insertBehavior(selector, behavior)
       }
@@ -493,7 +496,7 @@ Ninja = (function() {
       if(!eventCovered) {
         uncovered.unshift(evnt)
         this.eventQueue = uncovered
-      } 
+      }
     },
     handleQueue: function(){
       while (this.eventQueue.length != 0){
@@ -502,9 +505,9 @@ Ninja = (function() {
       }
     },
     applyBehaviorsTo: function(element, behaviors) {
-      var curContext, 
-      context = new RootContext, 
-      applyList = [], 
+      var curContext,
+      context = new RootContext,
+      applyList = [],
       scribe = new EventScribe
 
       behaviors = behaviors.sort(function(left, right) {
@@ -592,7 +595,7 @@ Ninja = (function() {
         var collection = this
 
         //Sizzle?
-        $(root).find(this.selectors[i]).each( 
+        $(root).find(this.selectors[i]).each(
           function(index, elem){
             if (!$(elem).data("ninja-visited")) { //Pure optimization
               collection.apply(elem, [], i)
@@ -657,14 +660,14 @@ Ninja = (function() {
     delete handlers.priority
     if (typeof handlers.events != "undefined") {
       this.eventHandlers = handlers.events
-    } 
+    }
     else {
       this.eventHandlers = handlers
     }
 
     return this
   }
-  Behavior.prototype = {   
+  Behavior.prototype = {
     //XXX applyTo?
     apply: function(elem) {
       var context = this.inContext({})
@@ -767,12 +770,12 @@ Ninja = (function() {
         handler(eventRecord)
       }
     },
-    transform: function(elem){ 
-      return elem 
+    transform: function(elem){
+      return elem
     }
   }
 
-  return Ninja;  
+  return Ninja;
 })();
 
 (function() {
@@ -832,7 +835,7 @@ Ninja = (function() {
                   overlay.remove()
                 }
                 overlay.affix()
-                submitter.submit()						
+                submitter.submit()
               }
             }
           })
@@ -920,14 +923,14 @@ Ninja = (function() {
               if ((images = $('input[type=image]', form)).size() > 0){
                 image = images[0]
                 linkText = "<img src='" + image.src + "' alt='" + image.alt +"'";
-              } 
+              }
               else if((submits = $('input[type=submit]', form)).size() > 0) {
                 submit = submits[0]
                 if(submits.size() > 1) {
                   log("Multiple submits.  Using: " + submit)
                 }
                 linkText = submit.value
-              } 
+              }
               else {
                 log("Couldn't find a submit input in form");
               }

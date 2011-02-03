@@ -1,5 +1,5 @@
 PATH
-  remote: ../mizugumo
+  remote: /Users/evan/Development/Ruby/mizugumo
   specs:
     mizugumo (0.1.0)
 

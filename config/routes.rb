@@ -1,6 +1,8 @@
 MizugumoDemo::Application.routes.draw do
   resources :products
   match 'test', :to => 'test#index'
+  match 'rails_js', :to => 'test#rails_js'
+
   root :to => 'products#index'
 
   # The priority is based upon order of creation:
