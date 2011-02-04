@@ -5,11 +5,16 @@ gem 'rails', '3.0.3'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3-ruby', :require => 'sqlite3'
 gem "haml"
 gem 'mizugumo', :path => "../mizugumo"
 
+group :production
+  gem 'mysql
+end
+
+
 group :development, :test do
+  gem 'sqlite3-ruby', :require => 'sqlite3'
   gem "rspec", ">= 2.4.0"
   gem "rspec-rails", ">= 2.4.0"
   gem "factory_girl_rails"
