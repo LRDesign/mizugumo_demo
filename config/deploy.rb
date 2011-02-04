@@ -3,9 +3,6 @@ default_run_options[:pty] = true
 ssh_options[:auth_methods] = %w{publickey password} #jdl
 ssh_options[:forward_agent] = true
 
-
-# Overwrite the default deploy start/stop/restart actions with passenger ones
-require 'config/deploy/passenger'
 require 'bundler'
 require 'bundler/capistrano'
 set :bundle_without,  [:development, :test]
