@@ -1,68 +1,71 @@
 %h1 Test Controller / View
 
-%p This tests the conversion of links into forms by Mizugumo
+%p
+  This tests the conversion of links into forms by Mizugumo, and back again by NinjaScript.
+  Run this page with JavaScript disabled to see how link_to(:method => 'delete') outputs
+  a form so that non-JS users get a functional button that does what's intended.
+
+%h2 Rails code
+
+%p Use link_to() exactly as you would in any Rails project:
+%pre.code
+  :preserve
+    = link_to('Delete Product', @product, :method => 'delete')
+    = link_to( @product, :method => 'delete') do
+      = image_tag('delete_button.png')
+
+%h2 JS code
+%p Put this in your application.js (installed automatically by Mizugumo's install task):
+%pre.code
+  :preserve
+    Ninja.behavior({
+      '.mizugumo_graceful_form': becomesLink
+    })
+    Ninja.go()
+
+%hr
+
+%h2 Live Examples
+
+%p
+  View source or run without javascript enabled to see the behavior of the links below.
+
+%p
+  .no_method
+    %h3 Basic link without method - renders as normal link.
+    = link_to "Show Product", @product
 
 .no_method
   %h3 Basic link without method
   = link_to "Show Product", @product
 
-%table
-  %tr
-    %th Without AJAX
-    %th With AJAX
-  %tr
-    %td#without_ajax
-      .no_method
-        %h3 Basic link without method
-        = link_to "Show Product", @product
+.delete_method
+  %h3 Basic link with delete method
+  = link_to "Delete Product", @product, :method => :delete
 
-      .delete_method
-        %h3 Basic link with delete method
-        = link_to "Delete Product", @product, :method => :delete
+.delete_with_confirm
+  %h3 Basic link with delete method and confirm
+  = link_to "Delete Product", @product, :method => :delete, :confirm => 'Are you sure?'
 
-      .delete_with_confirm
-        %h3 Basic link with delete method and confirm
-        = link_to "Delete Product", @product, :method => :delete, :confirm => 'Are you sure?'
+.delete_with_class
+  %h3 Basic link with delete method and additional class
+  = link_to "Delete Product", @product, :method => :delete, :class => 'some_other_class'
 
-      .put_method
-        %h3 Basic link with put method
-        = link_to "Put Product", @product, :method => :put
+.delete_with_class_2
+  %h3 Basic link with delete method and additional class
+  = link_to "Delete Product", @product, :method => :delete, 'class' => 'some_other_class'
 
-      .image
-        %h3 Image link with delete method
-        = link_to @product, :method => :delete do
-          = image_tag 'press_it.png'
+.put_method
+  %h3 Basic link with put method
+  = link_to "Put Product", @product, :method => :put
 
-      .image_and_text
-        %h3 Image link with delete method
-        = link_to @product, :method => :delete do
-          = image_tag 'press_it.png'
-          Some other text
-    %td#contains_ajax
-      .no_method
-        %h3 Basic link without method
-        = link_to "Show Product", @product
+.image
+  %h3 Image link with delete method
+  = link_to @product, :method => :delete do
+    = image_tag 'press_it.png'
 
-      .delete_method
-        %h3 Basic link with delete method
-        = link_to "Delete Product", @product, :method => :delete
-
-      .delete_with_confirm
-        %h3 Basic link with delete method and confirm
-        = link_to "Delete Product", @product, :method => :delete, :confirm => 'Are you sure?'
-
-      .put_method
-        %h3 Basic link with put method
-        = link_to "Put Product", @product, :method => :put
-
-      .image
-        %h3 Image link with delete method
-        = link_to @product, :method => :delete do
-          = image_tag 'press_it.png'
-
-      .image_and_text
-        %h3 Image link with delete method
-        = link_to @product, :method => :delete do
-          = image_tag 'press_it.png'
-          Some other text
-
+.image_and_text
+  %h3 Image link with delete method
+  = link_to @product, :method => :delete do
+    = image_tag 'press_it.png'
+    Some other text
