@@ -24,7 +24,7 @@ to config/database.yml.   That should be enough to run it.
 
 == Contributing
 
-Clone the repo and submit pull requests.  :-)
+Fork the repo and submit pull requests; y'all know the drill.
 
 If you are working on Mizugumo, make sure your new version of Mizugumo successfully passes all the specs
 for it in this demo app before submitting.  The important ones are in spec/views/test.  You can point this
@@ -32,3 +32,9 @@ app to your local copy of Mizugumo during development by putting this in Gemfile
 
   gem 'mizugumo', :path => 'path/to/your/mizugumo/working/copy'
 
+== Copyright
+
+Copyright (c) 2011 Evan Dorn and Logical Reality design. See LICENSE.txt for
+further details.
+
+Web Development by Logical Reality Design: http://LRDesign.com
