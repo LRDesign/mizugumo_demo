@@ -6,15 +6,14 @@ gem 'rails', '3.0.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem "haml"
-gem 'mizugumo', :path => "../mizugumo"
+gem 'mizugumo'
 
-group :production
-  gem 'mysql
+group :production do
+  gem 'mysql'
 end
 
-
 group :development, :test do
-  gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem "sqlite3-ruby", :require => 'sqlite3'
   gem "rspec", ">= 2.4.0"
   gem "rspec-rails", ">= 2.4.0"
   gem "factory_girl_rails"
