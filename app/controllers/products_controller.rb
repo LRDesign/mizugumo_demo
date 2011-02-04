@@ -37,7 +37,7 @@ class ProductsController < ApplicationController
   def edit
     @product = Product.find(params[:id])
     respond_to do |format|
-      format.html # new.html.erb
+      format.html
       format.js
     end
   end
@@ -54,8 +54,8 @@ class ProductsController < ApplicationController
         format.js
       else
         format.html { render :action => "new" }
-        format.js { render :action => "new" }
         format.xml  { render :xml => @product.errors, :status => :unprocessable_entity }
+        format.js  { render :action => "new" }
       end
     end
   end
@@ -73,7 +73,7 @@ class ProductsController < ApplicationController
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @product.errors, :status => :unprocessable_entity }
-        format.js   { render :action => "edit" }
+        format.js { render :action => "edit" }
       end
     end
   end

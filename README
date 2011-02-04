@@ -1,10 +1,13 @@
 == Welcome to MizugumoDemo
 
-This is the demo and testing project for Mizugumo, a soon-to-exist Rails
-gem that provides integration with NinjaScript and Ruby on Rails in order
-to provide a super-simple, seamless, no-extra-labor route to AJAXy Rails
-applications that degrade gracefully in the absence of JavaScript.   For
-more information on NinjaScript, see:
+This is the demo and testing project for Mizugumo and NinjaScript.
+Mizugum is a gem for Ruby on Rails (>= 3.x) that provides integration with
+NinjaScript and Ruby on Rails in order to provide a super-simple, seamless,
+no-extra-labor route to AJAXy Rails applications that degrade gracefully
+in the absence of JavaScript.
+
+You can see this app running at:
+  http://mizugomo-demo.lrdesign.com
 
 You can see the gem in development at:
 
@@ -12,6 +15,20 @@ You can see the gem in development at:
 
 For more information on NinjaScript, see:
   https://github.com/LRDesign/NinjaScript
-    http://blog.lrdesign.com/2010/10/ninjascript-javascript-so-unobtrusive-youll-never-it-see-coming/
+  http://blog.lrdesign.com/2010/10/ninjascript-javascript-so-unobtrusive-youll-never-it-see-coming/
 
-I am very close to a first release of Mizugumo.  Stay tuned!
+== Installing
+
+To run your own copy of this app, clone the repo and then copy config/database.yml.sqlite
+to config/database.yml.   That should be enough to run it.
+
+== Contributing
+
+Clone the repo and submit pull requests.  :-)
+
+If you are working on Mizugumo, make sure your new version of Mizugumo successfully passes all the specs
+for it in this demo app before submitting.  The important ones are in spec/views/test.  You can point this
+app to your local copy of Mizugumo during development by putting this in Gemfile:
+
+  gem 'mizugumo', :path => 'path/to/your/mizugumo/working/copy'
+
