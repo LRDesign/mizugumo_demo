@@ -1,0 +1,4 @@
+$("#<%= dom_id(@product) %>").addClass('being_edited')
+$("#<%= dom_id(@product) %> a").contents().unwrap()
+$("#products").append("<%= escape_javascript(render :partial => 'form') %>")
+

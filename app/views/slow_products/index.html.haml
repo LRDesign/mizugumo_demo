@@ -1,0 +1,24 @@
+%h2
+  Timestamp:
+  =Time.now.strftime('%s')
+
+%p
+  This is a slow version of the products controller to show the automatic
+  spinner overlay provided by NinjaScript's submitsAsAjax behavior.
+
+
+%hr
+
+%h1 List of products
+
+#products
+  %table.scaffold
+    %tr
+      %th Name
+      %th Description
+      %th Price
+      %th{:colspan => 3}
+    =render :collection => @products, :partial => 'slow_products/product'
+
+  = link_to 'New Product', new_slow_product_path, :class => 'new_product'
+

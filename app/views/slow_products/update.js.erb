@@ -1,0 +1,4 @@
+$("#<%= dom_id(@product) %>").replaceWith(
+  "<%= escape_javascript(render(@product)) %>"
+)
+$("#products form").remove()

@@ -1,8 +1,8 @@
 /* 
- * NinjaScript - 0.8.0
+ * NinjaScript - 0.8.2
  * written by and copyright 2010-2011 Judson Lester and Logical Reality Design
  * Licensed under the MIT license
- * 2011-02-03
+ * 2011-02-04
  *
  * Those new to this source should skim down to standardBehaviors
  */
@@ -878,7 +878,7 @@ Ninja = (function() {
       submitsAsAjaxLink: function(configs) {
         configs = Ninja.tools.ensureDefaults(configs,
           { busyElement: function(elem) {
-              $(elem).parents('address,blockquote,body,dd,div,p,dl,dt,table,form,ol,ul,tr')[0]
+              return $(elem).parents('address,blockquote,body,dd,div,p,dl,dt,table,form,ol,ul,tr')[0]
             }})
 
         return new ninja.does({
@@ -1056,47 +1056,99 @@ Ninja = (function() {
               }, "andDoDefault"]
           })
       }
+      function isWatermarkedPassword(configs) {
+        return new ninja.does({
+            priority: 1000,
+            helpers: {
+              prepareForSubmit: function() {
+                if($(this.element).hasClass('ninja_watermarked')) {
+                  $(this.element).val('')
+                }
+              },
+            },
+            transform: function(element) {
+              var label = $('label[for=' + $(element)[0].id + ']')
+              if(label.length == 0) {
+                this.cantTransform()
+              }
+              label.addClass('ninja_watermarked')
+              this.watermarkText = label.text()
+
+              var el = $(element)
+              el.addClass('ninja_watermarked')
+              el.val(this.watermarkText)
+              el.attr("type", "text")
+
+              this.applyBehaviors(el.parents('form')[0], [watermarkedSubmitter(this)])
+
+              return element
+            },
+            events: {
+              focus: function(event) {
+                $(this.element).removeClass('ninja_watermarked').val('').attr("type", "password")
+              },
+              blur: function(event) {
+                if($(this.element).val() == '') {
+                  $(this.element).addClass('ninja_watermarked').val(this.watermarkText).attr("type", "text")
+                }
+              }
+            }
+          })
+      }
+
+      function isWatermarkedText(configs) {
+        return new ninja.does({
+            priority: 1000,
+            helpers: {
+              prepareForSubmit: function() {
+                if($(this.element).hasClass('ninja_watermarked')) {
+                  $(this.element).val('')
+                }
+              },
+            },
+            transform: function(element) {
+              var label = $('label[for=' + $(element)[0].id + ']')
+              if(label.length == 0) {
+                this.cantTransform()
+              }
+              label.addClass('ninja_watermarked')
+              this.watermarkText = label.text()
+              var el = $(element)
+              el.addClass('ninja_watermarked')
+              el.val(this.watermarkText)
+
+              this.applyBehaviors(el.parents('form')[0], [watermarkedSubmitter(this)])
+
+              return element
+            },
+            events: {
+              focus: function(event) {
+                $(this.element).removeClass('ninja_watermarked').val('')
+              },
+              blur: function(event) {
+                if($(this.element).val() == '') {
+                  $(this.element).addClass('ninja_watermarked').val(this.watermarkText)
+                }
+              }
+            }
+          })
+      }
 
       return {
         isWatermarked: function(configs) {
-          return new ninja.does({
-              priority: 1000,
-              helpers: {
-                prepareForSubmit: function() {
-                  if($(this.element).hasClass('ninja_watermarked')) {
-                    $(this.element).val('')
-                  }
-                },
-              },
-              transform: function(element) {
-                if(!/^text$/i.test($(element).attr("type")) && !$(element).is("textarea")) {
-                  this.cantTransform()
-                }
-
-                var label = $('label[for=' + $(element)[0].id + ']')
-                if(label.length == 0) {
-                  this.cantTransform()
-                }
-                label.addClass('ninja_watermarked')
-                this.watermarkText = label.text()
-                var el = $(element)
-                el.addClass('ninja_watermarked')
-                el.val(this.watermarkText)
-
-                this.applyBehaviors(el.parents('form')[0], [watermarkedSubmitter(this)])
-
-                return element
-              },
-              events: {
-                focus: function(event) {
-                  $(this.element).removeClass('ninja_watermarked').val('')
-                },
-                blur: function(event) {
-                  if($(this.element).val() == '') {
-                    $(this.element).addClass('ninja_watermarked').val(this.watermarkText)
-                  }
-                }
+          return new ninja.chooses(function(meta) {
+              meta.asText = isWatermarkedText(configs)
+              meta.asPassword = isWatermarkedPassword(configs)
+            },
+            function(elem) {
+              if($(elem).is("input[type=text],textarea")) {
+                return this.asText
               }
+              //Seems IE has a thing about changing input types...
+              //We'll get back to this one
+//              else if($(elem).is("input[type=password]")){
+//                return this.asPassword
+//              }
             })
         }
       }

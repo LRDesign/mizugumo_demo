@@ -2,6 +2,7 @@ MizugumoDemo::Application.routes.draw do
   get "home/index"
 
   resources :products
+  resources :slow_products
   match 'test', :to => 'test#index'
 
   match 'login', :to => 'login#new', :as => :login
