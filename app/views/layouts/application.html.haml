@@ -16,6 +16,11 @@
     = csrf_meta_tag
 
   %body
-    #messages
     #content
+      - unless flash.blank?
+        - flash.select{|k,v| [ :success, :notice, :error].include?(k)}.each do |key, msg|
+          - if msg
+            %div{ :class => "flash #{key.to_s}" }
+              = msg
+
       = yield
