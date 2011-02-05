@@ -1123,7 +1123,9 @@ Ninja = (function() {
             },
             events: {
               focus: function(event) {
-                $(this.element).removeClass('ninja_watermarked').val('')
+                if($(this.element).hasClass('ninja_watermarked')) {
+                  $(this.element).removeClass('ninja_watermarked').val('')
+                }
               },
               blur: function(event) {
                 if($(this.element).val() == '') {
