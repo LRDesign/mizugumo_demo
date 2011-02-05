@@ -4,7 +4,7 @@ class LoginController < ApplicationController
   end
 
   def create
-    flash[:success] = "Thanks for logging in, #{params[:email]}!"
+    flash[:success] = "Thanks for signing, #{params[:name]}!"
     redirect_to :login
   end
 

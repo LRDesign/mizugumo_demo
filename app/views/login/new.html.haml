@@ -1,7 +1,7 @@
 %h1 Watermarking Demo
 %p
   :escaped
-    The fake login form below demonstrates NinjaScript's automatic watermarking
+    The simple form below demonstrates NinjaScript's automatic watermarking
     behavior.  It automatically watermarks your <input>s and/or <textarea>s
     with the contents of the <label> that matches the input.   Sensible
     styling is provided by the default Mizugumo stylesheet.
@@ -21,12 +21,12 @@
 
 %hr
 
-%h1 Please log in!
+%h1 Please sign our log book!
 
 =form_tag authenticate_path, :id => 'login_form' do
+  %label{ :for => 'name' } Your Name
+  =text_field_tag(:name, nil, :size => 40)
   %label{ :for => 'email' } Email
-  =text_field_tag(:email)
-  %label{ :for => 'password' } Password
-  =password_field_tag(:password)
-  =submit_tag 'Log In!'
+  =text_field_tag(:email, nil, :size => 40)
+  =submit_tag 'Sign It!'
 
